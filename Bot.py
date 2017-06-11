@@ -42,8 +42,8 @@ def getMessagesHuman():
      msg= json.loads(getMessages())
      print(msg['name']+':'+msg['text'])
 
-def searchForTrump(previous=""):
-    trumpList =[]
+def searchForTerms(previous="",term ='text'):
+    termList =[]
     if previous is not "":
         #print(previous)
         preCheck= getNewMessages(previous)
@@ -58,50 +58,26 @@ def searchForTrump(previous=""):
     #if not messages: return False
     
     for msg in messages:
-        if 'trump' in  msg['text'].lower():
-            trumpList.append(msg)
+        if term in  msg['text'].lower():
+            termList.append(msg)
             #getStockMessage(randint(0,3))
             likeMessage(msg['id'])
             print(msg['text'])
     
-    return  trumpList   
-def searchForTrumpWeb(previous=""):
-    trumpList =[]
-    if previous is not "":
-        #print(previous)
-        preCheck= cgi.FieldStorage()
-        messages = []
-        #print(preCheck)
-        if preCheck is not False:
-            print(preCheck)
-            messages.append(preCheck)
-    
-    else:
-        
-        messages =getMessages()['response']['messages']
-    
-    #if not messages: return False
-    
-    for msg in messages:
-        if 'trump' in  msg['text'].lower():
-            trumpList.append(msg)
-            #getStockMessage(randint(0,3))
-            likeMessage(msg['id'])
-            print(msg['text'])
-    
-    return  trumpList     
+    return  termList   
+
 
     
     
 def sendStockMessage(num,*args):
     if num is 0:
-       sendMessage("MEXICO does not have the best people. I have the best people. Believe it folks.")
+       sendMessage("Stock Message 1")
     elif num is 1:
-        sendMessage("We can no longer allow CHYNA to attack Russia.")
+        sendMessage("Stock Message 2")
     elif num is 2:
-        sendMessage("You will not lose your covfefe.")
+        sendMessage("Stock Message 3")
     else:
-        sendMessage("bigly")
+        sendMessage("Stock Message 4")
 
 def likeMessage(msgID):
     jsonData =json.dumps({'bot_id':Bot.botID})
