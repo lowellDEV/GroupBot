@@ -1,4 +1,5 @@
 import GroupMeClasses
+import sys
 #import BotInfo
 BotInfo = __import__('TestBotInfo')
 import time
@@ -7,24 +8,25 @@ def main():
     messages = ['Test Message one','Test Message 2']
     bot = GroupMeClasses.generalBot(BotInfo.botID,messages)
     groupme = GroupMeClasses.GroupMe(BotInfo.token,BotInfo.groupID)
+    groupme.sendMessage('I Started the bot')
     if len(sys.argv) >1 :
         previous =groupme.getLastMessageID()
     else:
         previous =''
     count =0
     while True:
-        time.sleep(10)
         if count %6==0 : print (count/6)
-        
-        hits = bot.searchMessages(['Spoiler Alert','Spoilers'],groupme.getMessages())
+        terms =['Spoiler Alert','Spoilers']
+        hits = bot.searchMessages(terms,groupme.getMessages()['response']['messages'])
         if hits:
+            print('yes')
             user=[]
             for hit in hits:
-                user.append(hit['sender_id'])
+                user.append(hit)
             bot.defaultAction()
             groupme.sendMessage('Stop Spoiling',user)
-        previous= bot.getLastMessageID()
+        previous= groupme.getLastMessageID()
         count+=1
-        
+        time.sleep(1)
 if __name__=="__main__":
     main() 
