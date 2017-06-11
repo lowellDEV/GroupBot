@@ -1,9 +1,14 @@
-import Trump
+import GroupMeClasses
+#import BotInfo
+BotInfo = __import__('TestBotInfo')
 import time
 from random import randint
 def main():
+    messages = ['Test Message one','Test Message 2']
+    bot = GroupMeClasses.generalBot(BotInfo.botID,messages)
+    groupme = GroupMeClasses.GroupMe(BotInfo.token,BotInfo.groupID)
     if len(sys.argv) >1 :
-        previous =Trump.getLastMessageID()
+        previous =groupme.getLastMessageID()
     else:
         previous =''
     count =0
@@ -11,14 +16,15 @@ def main():
         time.sleep(10)
         if count %6==0 : print (count/6)
         
-        hits = Trump.searchForTrump(previous)
+        hits = bot.searchMessages(['Spoiler Alert','Spoilers'],groupme.getMessages())
         if hits:
             user=[]
             for hit in hits:
                 user.append(hit['sender_id'])
-            Trump.sendStockMessage(randint(0,3),user)
-            Trump.thankSupporter(hits)
-        previous=Trump.getLastMessageID()
+            bot.defaultAction()
+            groupme.sendMessage('Stop Spoiling',user)
+        previous= bot.getLastMessageID()
         count+=1
+        
 if __name__=="__main__":
     main() 

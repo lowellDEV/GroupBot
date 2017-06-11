@@ -1,5 +1,5 @@
-#Trump= __import__('TrumpBotInfo') #user and bot info
-Trump= __import__('TestBotInfo') #for testing
+#Bot= __import__('BotInfo') #user and bot info
+Bot= __import__('TestBotInfo') #for testing
 import requests
 from random import randint
 import json
@@ -8,15 +8,15 @@ gmURL = 'https://api.groupme.com/v3'
 URLB = gmURL+'/bots'
 
 def sendMessage(msg):
-    jsonData =json.dumps({'bot_id':Trump.botID,'text':msg})
+    jsonData =json.dumps({'bot_id':Bot.botID,'text':msg})
     r= requests.post(URLB+'/post',jsonData)
 
 def getMessages(extraKey='',extraVal=''):
     if extraKey:
-        params = {'token':str(Trump.token),extraKey:extraVal}
+        params = {'token':str(Bot.token),extraKey:extraVal}
     else:
-        params = 'token='+str(Trump.token)
-    r = requests.get(gmURL+'/groups/'+Trump.groupID+'/messages',params)
+        params = 'token='+str(Bot.token)
+    r = requests.get(gmURL+'/groups/'+Bot.groupID+'/messages',params)
     if r.status_code == 304:
         return False
     else:
@@ -24,7 +24,7 @@ def getMessages(extraKey='',extraVal=''):
 
 def getNewMessages(previous):
     return getMessages('since_id',previous)
-    # r= requests.get(gmURL+'/groups/'+Trump.groupID+'/messages',params).json()
+    # r= requests.get(gmURL+'/groups/'+Bot.groupID+'/messages',params).json()
     
     # if r.status_code == 304:
         # return []
@@ -33,10 +33,10 @@ def getNewMessages(previous):
         
 def getMessagesRequest(extraKey='',extraVal=''):
     if extraKey:
-        params = {'token':str(Trump.token),extraKey:extraVal}
+        params = {'token':str(Bot.token),extraKey:extraVal}
     else:
-        params = 'token='+str(Trump.token)
-    return  requests.get(gmURL+'/groups/'+Trump.groupID+'/messages',params)
+        params = 'token='+str(Bot.token)
+    return  requests.get(gmURL+'/groups/'+Bot.groupID+'/messages',params)
     
 def getMessagesHuman():
      msg= json.loads(getMessages())
@@ -104,8 +104,8 @@ def sendStockMessage(num,*args):
         sendMessage("bigly")
 
 def likeMessage(msgID):
-    jsonData =json.dumps({'bot_id':Trump.botID})
-    r= requests.post(gmURL+'/messages/'+Trump.groupID+'/'+msgID+'/like?token='+Trump.token,jsonData)
+    jsonData =json.dumps({'bot_id':Bot.botID})
+    r= requests.post(gmURL+'/messages/'+Bot.groupID+'/'+msgID+'/like?token='+Bot.token,jsonData)
     #print(r.request.path_url)
     print(msgID)
 
@@ -133,7 +133,7 @@ def thankSupporter(hit):
     for n in list(set(name)):
         msg = '@'+n+' '+msg  
     
-    jsonData =json.dumps({'bot_id':Trump.botID,'text':msg,
+    jsonData =json.dumps({'bot_id':Bot.botID,'text':msg,
         'attachments':[{'type':'mentions','user_ids':user,'loci':loc}]})
     
     r= requests.post(URLB+'/post',jsonData)
