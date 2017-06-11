@@ -16,15 +16,17 @@ def main():
     count =0
     while True:
         if count %6==0 : print (count/6)
-        terms =['Spoiler Alert','Spoilers']
-        hits = bot.searchMessages(terms,groupme.getMessages()['response']['messages'])
-        if hits:
-            print('yes')
-            user=[]
-            for hit in hits:
-                user.append(hit)
-            bot.defaultAction()
-            groupme.sendMessage('Stop Spoiling',user)
+        terms =['Test','Tests']
+        newMessages = groupme.getMessages('since_id',previous)
+        if newMessages:
+            hits = bot.searchMessages(terms,newMessages['response']['messages'])
+            if hits:
+                print('yes')
+                user=[]
+                for hit in hits:
+                    user.append(hit)
+                bot.defaultAction()
+                groupme.sendMessage('Catch Successful',user)
         previous= groupme.getLastMessageID()
         count+=1
         time.sleep(1)

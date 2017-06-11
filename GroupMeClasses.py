@@ -52,7 +52,7 @@ class GroupMe(object):
     token =''
     baseURL = 'https://api.groupme.com/v3'
     groupID = ''
-    baseGuid = 'GroupMEBOTSOURCED'
+    baseGuid = 'GROUPMEBOTSOURCED'
     
     def __init__(self,token,groupID):
         self.token = token
