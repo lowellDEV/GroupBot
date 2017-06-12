@@ -9,26 +9,34 @@ class generalBot(object):
     baseUrl = 'https://api.groupme.com/v3'
     botUrl= baseUrl +'/bots'
     botId = ''
+    botName =''
     interval = 5
     messageList =['Bot Triggered']
     
-    def __init__(self,botId,messageList):
+    def __init__(self,botId,botName,messageList):
         self.botId =botId
+        self.botName =botName
         self.messageList = messageList
     
-    def sendMessage(self,msg,user=[]):
+    def sendMessage(self,msg,user={}):
+        attachments=[]
         if user:
             loc = []
             name = []
             count =0
-            for u in hit:
-                user.append(u['sender_id'])
+            hit = []
+            
+            for u in user:
+                print(u)
+                hit.append(u['sender_id'])
                 loc.append([count,len(u['name'])])
                 name.append(u['name'])
                 count+=len(u['name'])+2
             for n in list(set(name)):
                 msg = '@'+n+' '+msg
-        jsonData =json.dumps({'bot_id':self.botId,'text':msg})
+            attachments.append({'type':'mentions','user_ids':hit,'loci':loc})
+        jsonData =json.dumps({'bot_id':self.botId,'text':msg,
+            'attachments':attachments})
         requests.post(self.botUrl+'/post',jsonData)
 
     def searchMessages(self,terms,messages):
@@ -43,11 +51,32 @@ class generalBot(object):
     def defaultAction(self):
         self.sendMessage(self.messageList[randint(0,len(self.messageList)-1)])
     
-    def customAction(self,file):
-        '''Unsafe; run a custom code'''
-        exec(file)
+    def customAction(self,hits):
+        '''Spoilerbot Specific'''
+        print (hits)
+        act= __import__('SpoilerActions')
+        for hit in hits:
+            if type(hit) is not dict:
+                    continue
+            #check input            
+            test = act.checkString(hit['text'],self.botName)
+            print(test)
+            if test == 1:
+                for x in range(10):
+                    self.sendMessage("Alright I am Spamming Like you said. [please don't Kill me]",
+                        [hit])
+            elif test == 2:
+                self.defaultAction()
+                self.sendMessage(", I Got your back",[hit])
+            elif test == 3:
+                self.sendMessage("To Spam begin with \"#spam\" \n"+
+                "To get backup begin with \"#getMyBack\" \n"+
+                "To get help begin with \"#help\" ")
+            elif test:
+                self.sendMessage("Exactly")
 
-        
+                
+                
 class GroupMe(object):
     token =''
     baseURL = 'https://api.groupme.com/v3'

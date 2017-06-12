@@ -7,9 +7,9 @@ import time
 from random import randint
 def main():
     messages = BotMessages.messages
-    bot = GroupMeClasses.generalBot(BotInfo.botID,messages)
+    bot = GroupMeClasses.generalBot(BotInfo.botID,BotInfo.botName,messages)
     groupme = GroupMeClasses.GroupMe(BotInfo.token,BotInfo.groupID)
-    groupme.sendMessage('I Started the bot')
+    #groupme.sendMessage('I Started the bot')
     if len(sys.argv) >1 :
         previous =groupme.getLastMessageID()
     else:
@@ -27,9 +27,10 @@ def main():
                 user=[]
                 for hit in hits:
                     user.append(hit)
-                bot.defaultAction()
-                groupme.sendMessage(BotMessages.fromCreator,user)
-        previous= groupme.getLastMessageID()
+                bot.customAction(user)
+                print('out')
+                #groupme.sendMessage(BotMessages.fromCreator,user)
+            previous= groupme.getLastMessageID()
         count+=1
         time.sleep(1)
 if __name__=="__main__":
