@@ -28,7 +28,7 @@ def main():
                 for hit in hits:
                     user.append(hit)
                 bot.defaultAction()
-            groupme.sendMessage(BotMessages.fromCreator,user)
+                groupme.sendMessage(BotMessages.fromCreator,user)
         previous= groupme.getLastMessageID()
         count+=1
         time.sleep(1)
