@@ -8,7 +8,7 @@ from random import randint
 def main():
     messages = BotMessages.messages
     bot = GroupMeClasses.generalBot(BotInfo.botID,BotInfo.botName,messages)
-    groupme = GroupMeClasses.GroupMe(BotInfo.token,BotInfo.groupID)
+    #groupme = GroupMeClasses.GroupMe(BotInfo.token,BotInfo.groupID)
     #groupme.sendMessage('I Started the bot')
     if len(sys.argv) >1 :
         previous =groupme.getLastMessageID()
@@ -33,5 +33,23 @@ def main():
             previous= groupme.getLastMessageID()
         count+=1
         time.sleep(1)
+def runWeb(response):
+    messages = BotMessages.messages
+    bot = GroupMeClasses.generalBot(BotInfo.botID,BotInfo.botName,messages)
+    #groupme = GroupMeClasses.GroupMe(BotInfo.token,BotInfo.groupID)
+    terms =BotMessages.terms
+    hits = bot.searchMessages(terms,[response])
+    if hits:
+        print('yes')
+        user=[]
+        for hit in hits:
+            if 'bot' in hit['sender_type']:
+                continue
+            user.append(hit)
+            #bot.sendMessage(hit['text'])
+        bot.customAction(user)
+
+        print('out')
+
 if __name__=="__main__":
-    main() 
+    main()

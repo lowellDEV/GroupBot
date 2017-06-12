@@ -12,12 +12,12 @@ class generalBot(object):
     botName =''
     interval = 5
     messageList =['Bot Triggered']
-    
+
     def __init__(self,botId,botName,messageList):
         self.botId =botId
         self.botName =botName
         self.messageList = messageList
-    
+
     def sendMessage(self,msg,user={}):
         attachments=[]
         if user:
@@ -25,7 +25,7 @@ class generalBot(object):
             name = []
             count =0
             hit = []
-            
+
             for u in user:
                 print(u)
                 hit.append(u['sender_id'])
@@ -41,16 +41,18 @@ class generalBot(object):
 
     def searchMessages(self,terms,messages):
         hitList =[]
+        #dict(messages)
         for msg in messages:
+
             for term in terms:
                 if term.lower() in msg['text'].lower():
                     hitList.append(msg)
                     print(msg['text'])
-        return  hitList   
-    
+        return  hitList
+
     def defaultAction(self):
         self.sendMessage(self.messageList[randint(0,len(self.messageList)-1)])
-    
+
     def customAction(self,hits):
         '''Spoilerbot Specific'''
         print (hits)
@@ -58,7 +60,7 @@ class generalBot(object):
         for hit in hits:
             if type(hit) is not dict:
                     continue
-            #check input            
+            #check input
             test = act.checkString(hit['text'],self.botName)
             print(test)
             if test == 1:
@@ -75,14 +77,14 @@ class generalBot(object):
             elif test:
                 self.sendMessage("Exactly")
 
-                
-                
+
+
 class GroupMe(object):
     token =''
     baseURL = 'https://api.groupme.com/v3'
     groupID = ''
     baseGuid = 'GroupMEBOTSOURCED'
-    
+
     def __init__(self,token,groupID):
         self.token = token
         self.groupID =groupID
@@ -96,21 +98,21 @@ class GroupMe(object):
             return False
         else:
             return  r.json()
-    
+
     def likeMessage(self,msgID):
         jsonData =json.dumps({'bot_id':Bot.botID})
         requests.post(self.baseURL+'/messages/'+self.groupID+'/'+msgID+'/like?token='+self.token,jsonData)
-    
+
     def getLastMessageID(self):
         msg= self.getMessages('limit',1)['response']['messages']
         return msg[0]['id']
-    
+
     def sendMessage(self,msg,user=[]):
         loc = []
         name = []
         attachments =[]
         userID=[]
-        if user: 
+        if user:
             count =0
             for u in user:
                 if type(u) is not dict:
@@ -125,43 +127,42 @@ class GroupMe(object):
         jsonData =json.dumps({'message':{'source_guid':self.baseGuid+str(randint(10,10100)),'text':msg,'attachments':attachments}})
         print(jsonData)
         headers = {'Content-type': 'application/json'}
-        r=requests.post(self.baseURL+'/groups/'+self.groupID+'/messages?token='+self.token,data= jsonData, headers=headers)  
+        r=requests.post(self.baseURL+'/groups/'+self.groupID+'/messages?token='+self.token,data= jsonData, headers=headers)
         print(r.raise_for_status())
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
